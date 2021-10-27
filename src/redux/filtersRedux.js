@@ -1,5 +1,4 @@
 /* SELECTORS */
-
 export const getAllFilters = ({filters}) => filters;
 
 /* ACTIONS */
@@ -11,15 +10,15 @@ const createActionName = name => `app/${reducerName}/${name}`;
 // action types
 export const CHANGE_PHRASE = createActionName('CHANGE_PHRASE');
 // TODO - add other action types
-export const CHANGE_DURATION = createActionName('CHANGE_DURATION');
+export const CHANGE_FROM = createActionName('CHANGE_FROM');
+export const CHANGE_TO = createActionName('CHANGE_TO');
 export const ADD_TAG = createActionName('ADD_TAG');
 export const REMOVE_TAG = createActionName('REMOVE_TAG');
 // action creators
 export const changeSearchPhrase = payload => ({ payload, type: CHANGE_PHRASE });
 // TODO - add other action creators
-export const changeDuration = (type, value) => ({ 
-  payload: {[type]: value}, 
-  type: CHANGE_DURATION });
+export const changeFrom = payload => ({ payload, type: CHANGE_FROM });
+export const changeTo = payload => ({ payload, type: CHANGE_TO });
 export const addTag = payload => ({payload, type: ADD_TAG});
 export const removeTag = payload => ({payload, type: REMOVE_TAG});
 // reducer
@@ -30,23 +29,28 @@ export default function reducer(statePart = [], action = {}) {
         ...statePart,
         searchPhrase: action.payload,
       };
-	  case CHANGE_DURATION:
+	  case CHANGE_FROM:
 		  return {
           ...statePart,
           duration: {
-          ...statePart.duration,
-          ...action.payload,
+            ...statePart.duration,
+            from: action.payload
           },
         }
+      case CHANGE_TO:
+          return {
+              ...statePart,
+              duration: {
+                ...statePart.duration,
+                to: action.payload
+              },
+            }
 	  case ADD_TAG:
 		  return {
 			  ...statePart,
 			  tags: [...statePart.tags, action.payload],
 		  }
 	  case REMOVE_TAG:
-		  /*const tags = [...statePart.tags];
-		  const index = tags.indexOf(action.payload);
-		  tags.slice(index, 1);*/
 		  return {
           ...statePart,
           tags: statePart.tags.filter(tag => tag !== action.payload),
